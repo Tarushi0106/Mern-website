@@ -1,0 +1,54 @@
+/* Basic reset and box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Container styling */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Header styling */
+  header {
+    background-color: #333;
+    color: white;
+    padding: 15px 0;
+  }
+  
+  /* Logo styling */
+  .logo-brand a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  /* Navigation styling */
+  nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center; /* Centers the items horizontally */
+    align-items: center; /* Centers the items vertically */
+  }
+  
+  nav ul li {
+    margin: 0 15px; /* Adds spacing between the nav items */
+  }
+  
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+  }
+  
+  nav ul li a:hover {
+    color: #ddd; /* Changes color on hover */
+  }
+  

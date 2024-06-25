@@ -1,0 +1,111 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../store/auth";
+import { toast } from 'react-toastify'; // Correct import
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for react-toastify
+
+export const Login = () => {
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const navigate = useNavigate();
+  const storetokenInLS = useAuth();
+
+  // Handle the input field value
+  const handleInput = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setUser({
+      ...user,
+      [name]: value,
+    });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user), // converting object to json
+      });
+
+      console.log("login form ", response);
+
+      if (response.ok) { 
+        const responseData = await response.json();
+        alert("Login successful");
+        localStorage.setItem('token', responseData.token);
+        setUser({ email: "", password: "" });
+        toast.success("registration successful");
+        console.log("Response data:", responseData);
+        navigate("/"); // Navigate to the home page after successful login
+      } else {
+        const res_data = await response.json();
+        toast.error(res_data.extraDetails ? res_data.extraDetails : res_data.message);
+        console.log("Invalid credentials");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <section>
+        <main>
+          <div className="section-registration">
+            <div className="container grid grid-two-cols">
+              <div className="registration-image reg-img">
+                <img
+                  src="/images/register.png"
+                  alt="a nurse with a cute look"
+                  width="400"
+                  height="500"
+                />
+              </div>
+              {/* Our main registration code */}
+              <div className="registration-form">
+                <h1 className="main-heading mb-3">Login form</h1>
+                <br />
+                <form onSubmit={handleSubmit}>
+                  <div>
+                    <label htmlFor="email">Email</label>
+                    <input
+                      type="text"
+                      name="email"
+                      value={user.email}
+                      onChange={handleInput}
+                      placeholder="Email"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="password">Password</label>
+                    <input
+                      type="password"
+                      name="password"
+                      value={user.password}
+                      onChange={handleInput}
+                      placeholder="Password"
+                    />
+                  </div>
+                  <br />
+                  <button type="submit" className="btn btn-submit">
+                    Login
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </main>
+      </section>
+    </>
+  );
+};
